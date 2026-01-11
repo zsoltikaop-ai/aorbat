@@ -1,0 +1,851 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>212th Airborne Company ORBAT</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;600&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #0b0e16;
+            --panel: #11182b;
+            --line: #1f2b4a;
+            --accent: #f5c542;
+            /* 212th orange */
+            --accent-soft: #ffdf8a;
+            --blue: #7aa2ff;
+            /* subtle republic blue */
+            --text: #e9ecf3;
+            --muted: #aab2c8;
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            font-family: Rajdhani, Arial, sans-serif;
+            background: radial-gradient(circle at top, #141b33 0%, #070a14 70%);
+            color: var(--text);
+        }
+
+        .stars {
+            position: fixed;
+            inset: 0;
+            background-image:
+                radial-gradient(#fff 1px, transparent 1px),
+                radial-gradient(#fff 1px, transparent 1px);
+            background-size: 2px 2px, 3px 3px;
+            background-position: 0 0, 60px 120px;
+            opacity: .05;
+            z-index: 0;
+        }
+
+        .squad-capacity {
+            font-size: 11px;
+            color: #bfc7ff;
+            opacity: .8;
+            margin-bottom: 6px;
+        }
+
+        /* ===== HEADER ===== */
+        header {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 20px 10px;
+            border-bottom: 1px solid var(--line);
+            background: linear-gradient(180deg, #0e1430, #070a14);
+        }
+
+        header h1 {
+            margin: 0;
+            font-family: Orbitron, monospace;
+            letter-spacing: 2px;
+            color: var(--accent);
+            text-shadow: 0 0 12px rgba(245, 197, 66, .4);
+        }
+
+        header small {
+            color: var(--muted);
+            letter-spacing: 1px;
+        }
+
+        /* ===== LAYOUT ===== */
+        .wrapper {
+            position: relative;
+            z-index: 2;
+            max-width: 1400px;
+            margin: 24px auto;
+            padding: 0 16px;
+        }
+
+        .orbat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        /* ===== PLATOON BLOCK ===== */
+        .platoon {
+            background: linear-gradient(180deg, #121a33, #0a0e1e);
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            padding: 12px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, .6);
+        }
+
+        .platoon-title {
+            font-family: Orbitron, monospace;
+            font-size: 14px;
+            color: var(--accent);
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            border-bottom: 1px solid var(--line);
+            padding-bottom: 6px;
+        }
+
+        /* ===== TABLE ===== */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        thead th {
+            background: #0c1328;
+            color: var(--accent-soft);
+            font-weight: 600;
+            padding: 6px;
+            border-bottom: 1px solid var(--line);
+            text-transform: uppercase;
+            font-size: 11px;
+        }
+
+        tbody td {
+            padding: 6px;
+            border-bottom: 1px solid rgba(255, 255, 255, .05);
+        }
+
+        tbody tr:hover {
+            background: rgba(122, 162, 255, .06);
+        }
+
+        /* STATUS PILL */
+        .status {
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .active {
+            background: rgba(100, 255, 140, .15);
+            color: #7dffb0
+        }
+
+        .ptrooper {
+            background: rgb(3, 57, 75);
+            color: rgb(206, 206, 206);
+        }
+
+        .pvt {
+            background: grey;
+            color: black;
+        }
+
+        .spc {
+            background: lightblue;
+            color: black;
+        }
+
+        .lcp {
+            background: orange;
+            color: orangered;
+        }
+
+        .cpl {
+            background: yellow;
+            color: black;
+        }
+
+        .arc {
+            background: blue;
+            color: white;
+        }
+
+        .sgt {
+            background: rgb(32, 107, 51);
+            color: #7dffb0
+        }
+
+        .inactive {
+            background: rgba(255, 120, 120, .15);
+            color: #ff9c9c
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media(max-width:1000px) {
+            .orbat-grid {
+                grid-template-columns: 1fr
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="stars"></div>
+
+    <header>
+        <h1>AIRBORNE COMPANY (A)</h1>
+        <br>
+        <div class="orbat-grid">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Position</th>
+                        <th>Name</th>
+                        <th>Status</th>
+                        <th>U</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>0345</td>
+                        <td>Co.Cmdr.</td>
+                        <td>Manz</td>
+                        <td><span class="status active">Active</span></td>
+                        <td>A</td>
+                    </tr>
+                    <tr>
+                        <td>7175</td>
+                        <td>Co.Exec.</td>
+                        <td>Talon</td>
+                        <td><span class="status active">Active</span></td>
+                        <td>A</td>
+                    </tr>
+                    <tr>
+                        <td>0343</td>
+                        <td>Co.Logi.</td>
+                        <td>Aurum</td>
+                        <td><span class="status active">Active</span></td>
+                        <td>A</td>
+                    </tr>
+                </tbody>
+
+            </table>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Unit</th>
+                        <th>Capacity</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>A</td>
+                        <td>62/100</td>
+                        <td>A3</td>
+                        <td>21/40</td>
+                    </tr>
+                    <tr>
+                        <td>A1</td>
+                        <td>18/30</td>
+                    </tr>
+                    <tr>
+                        <td>A2</td>
+                        <td>20/30</td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+
+    </header>
+
+    <div class="wrapper">
+
+        <div class="orbat-grid">
+
+            <!-- LEFT COLUMN -->
+            <div class="platoon">
+                <div class="platoon-title">1ST PLATOON (A1) — Parjai</div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Position</th>
+                            <th>Name</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>0013</td>
+                            <td>Plt. Leader</td>
+                            <td>Ace</td>
+                            <td><span class="status active">Active</span></td>
+                        </tr>
+                    </tbody>
+
+                </table>
+                <br>
+                <br>
+                <div class="squad">
+                    <div class="squad-title">1ST SQUAD (A1-1)</div>
+                    <div class="squad-capacity">Strength: 10 / 10</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Position</th>
+                                <th>Name</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>5374</td>
+                                <td><span class="status ptrooper">Paratrooper</span> <span class="status pvt">PVT</span>
+                                </td>
+                                <td>Oz</td>
+                                <td><span class="status active">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>7877</td>
+                                <td><span class="status ptrooper">Paratrooper</span> <span class="status pvt">PVT</span>
+                                </td>
+                                <td>Azure</td>
+                                <td><span class="status active">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>9344</td>
+                                <td><span class="status ptrooper">Paratrooper</span> <span class="status lcp">LCP</span>
+                                </td>
+                                <td>Pyro</td>
+                                <td><span class="status active">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>8808</td>
+                                <td><span class="status ptrooper">Paratrooper</span> <span class="status spc">SPC</span>
+                                </td>
+                                <td>Frostbite</td>
+                                <td><span class="status active">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>1748</td>
+                                <td><span class="status ptrooper">Paratrooper</span> <span class="status pvt">PVT</span>
+                                </td>
+                                <td>Dizzy</td>
+                                <td><span class="status active">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>3742</td>
+                                <td><span class="status ptrooper">Paratrooper</span> <span class="status pvt">PVT</span>
+                                </td>
+                                <td>Spooky</td>
+                                <td><span class="status active">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>2558</td>
+                                <td><span class="status ptrooper">Paratrooper</span> <span class="status pvt">PVT</span>
+                                </td>
+                                <td>Vincible</td>
+                                <td><span class="status active">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>1189</td>
+                                <td><span class="status ptrooper">Paratrooper</span> <span class="status lcp">LCP</span>
+                                </td>
+                                <td>Clutch</td>
+                                <td><span class="status active">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>5686</td>
+                                <td><span class="status ptrooper">Paratrooper</span> <span class="status sgt">SGT</span>
+                                </td>
+                                <td>Daedalus</td>
+                                <td><span class="status active">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>1415</td>
+                                <td><span class="status ptrooper">Paratrooper</span> <span class="status spc">SPC</span>
+                                </td>
+                                <td>Jamo</td>
+                                <td><span class="status active">Active</span></td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+
+                <div class="squad">
+                    <div class="squad-title">2ND SQUAD (A1-2)</div>
+                    <div class="squad-capacity">Strength: 8 / 10</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Position</th>
+                                <th>Name</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>8080</td>
+                                <td><span class="status ptrooper">Paratrooper</span> <span class="status pvt">PVT</span>
+                                </td>
+                                <td>Cozmic</td>
+                                <td><span class="status active">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>4762</td>
+                                <td><span class="status ptrooper">Paratrooper</span> <span class="status pvt">PVT</span>
+                                </td>
+                                <td>Zach</td>
+                                <td><span class="status active">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>4291</td>
+                                <td><span class="status ptrooper">Paratrooper</span> <span class="status pvt">PVT</span>
+                                </td>
+                                <td>Velikan</td>
+                                <td><span class="status active">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>9031</td>
+                                <td><span class="status ptrooper">Paratrooper</span> <span class="status pvt">PVT</span>
+                                </td>
+                                <td>Fang</td>
+                                <td><span class="status active">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>7941</td>
+                                <td><span class="status ptrooper">Paratrooper</span> <span class="status pvt">PVT</span>
+                                </td>
+                                <td>Youtube</td>
+                                <td><span class="status active">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>0405</td>
+                                <td><span class="status ptrooper">Paratrooper</span> <span class="status pvt">PVT</span>
+                                </td>
+                                <td>Shadow</td>
+                                <td><span class="status active">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>0054</td>
+                                <td><span class="status ptrooper">Paratrooper</span> <span class="status pvt">PVT</span>
+                                </td>
+                                <td>Pekka</td>
+                                <td><span class="status active">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>9107</td>
+                                <td><span class="status ptrooper">Paratrooper</span> <span class="status pvt">PVT</span>
+                                </td>
+                                <td>Hit</td>
+                                <td><span class="status active">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>—</td>
+                                <td><span class="status ptrooper"> </span></td>
+                                <td>—</td>
+                                <td><span class="status open">Open</span></td>
+                            </tr>
+                            <tr>
+                                <td>—</td>
+                                <td><span class="status ptrooper"> </span></td>
+                                <td>—</td>
+                                <td><span class="status open">Open</span></td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+
+                <!-- SQUAD 3 -->
+                <div class="squad">
+                    <div class="squad-title">3RD SQUAD (A1-3)</div>
+                    <div class="squad-capacity">Strength: 0 / 10</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Position</th>
+                                <th>Name</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>—</td>
+                                <td><span class="status ptrooper"> </span></td>
+                                <td>—</td>
+                                <td><span class="status open">Open</span></td>
+                            </tr>
+                            <tr>
+                                <td>—</td>
+                                <td><span class="status ptrooper"> </span></td>
+                                <td>—</td>
+                                <td><span class="status open">Open</span></td>
+                            </tr>
+                            <tr>
+                                <td>—</td>
+                                <td><span class="status ptrooper"> </span></td>
+                                <td>—</td>
+                                <td><span class="status open">Open</span></td>
+                            </tr>
+                            <tr>
+                                <td>—</td>
+                                <td><span class="status ptrooper"> </span></td>
+                                <td>—</td>
+                                <td><span class="status open">Open</span></td>
+                            </tr>
+                            <tr>
+                                <td>—</td>
+                                <td><span class="status ptrooper"> </span></td>
+                                <td>—</td>
+                                <td><span class="status open">Open</span></td>
+                            </tr>
+                            <tr>
+                                <td>—</td>
+                                <td><span class="status ptrooper"> </span></td>
+                                <td>—</td>
+                                <td><span class="status open">Open</span></td>
+                            </tr>
+                            <tr>
+                                <td>—</td>
+                                <td><span class="status ptrooper"> </span></td>
+                                <td>—</td>
+                                <td><span class="status open">Open</span></td>
+                            </tr>
+                            <tr>
+                                <td>—</td>
+                                <td><span class="status ptrooper"> </span></td>
+                                <td>—</td>
+                                <td><span class="status open">Open</span></td>
+                            </tr>
+                            <tr>
+                                <td>—</td>
+                                <td><span class="status ptrooper"> </span></td>
+                                <td>—</td>
+                                <td><span class="status open">Open</span></td>
+                            </tr>
+                            <tr>
+                                <td>—</td>
+                                <td><span class="status ptrooper"> </span></td>
+                                <td>—</td>
+                                <td><span class="status open">Open</span></td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+
+
+
+            <!-- RIGHT COLUMN -->
+            <div class="platoon">
+                <div class="platoon-title">2ND PLATOON (A2) — Halo</div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Position</th>
+                            <th>Name</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>0425</td>
+                            <td>Plt. Leader</td>
+                            <td>Cliff</td>
+                            <td><span class="status active">Active</span></td>
+                        </tr>
+                    </tbody>
+
+                </table>
+                <br>
+                <br>
+                <!-- SQUAD 1 -->
+                <div class="squad">
+                    <div class="squad-title">1ST SQUAD (A2-1)</div>
+                    <div class="squad-capacity">Strength: 10 / 10</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Position</th>
+                                <th>Name</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1945</td>
+                                <td><span class="status ptrooper">Paratrooper</span> <span class="status pvt">PVT</span>
+                                </td>
+                                <td>Code</td>
+                                <td><span class="status active">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>5683</td>
+                                <td><span class="status ptrooper">Paratrooper</span> <span class="status sgt">SGT</span>
+                                </td>
+                                <td>Gryx</td>
+                                <td><span class="status active">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>8008</td>
+                                <td><span class="status ptrooper">Paratrooper</span> <span class="status cpl">CPL</span>
+                                </td>
+                                <td>Xman</td>
+                                <td><span class="status active">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>7893</td>
+                                <td><span class="status ptrooper">Paratrooper</span> <span class="status pvt">PVT</span>
+                                </td>
+                                <td>Nøkk</td>
+                                <td><span class="status active">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>1971</td>
+                                <td><span class="status ptrooper">Paratrooper</span> <span class="status spc">SPC</span>
+                                </td>
+                                <td>Cyclone</td>
+                                <td><span class="status active">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>1331</td>
+                                <td><span class="status ptrooper">Paratrooper</span> <span class="status pvt">PVT</span>
+                                </td>
+                                <td>Fault</td>
+                                <td><span class="status active">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>9821</td>
+                                <td><span class="status arc">ARC</span> <span class="status lcp">LCP</span>
+                                </td>
+                                <td>Typ0</td>
+                                <td><span class="status active">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>9170</td>
+                                <td><span class="status ptrooper">Paratrooper</span> <span class="status pvt">PVT</span>
+                                </td>
+                                <td>Elysian</td>
+                                <td><span class="status active">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>7605</td>
+                                <td><span class="status ptrooper">Paratrooper</span> <span class="status lcp">LCP</span>
+                                </td>
+                                <td>Warden</td>
+                                <td><span class="status active">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>2727</td>
+                                <td><span class="status ptrooper">Paratrooper</span> <span class="status pvt">PVT</span>
+                                </td>
+                                <td>Poop</td>
+                                <td><span class="status active">Active</span></td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+
+                <!-- SQUAD 2 -->
+                <div class="squad">
+                    <div class="squad-title">2ND SQUAD (A2-2)</div>
+                    <div class="squad-capacity">Strength: 10 / 10</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Position</th>
+                                <th>Name</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>5050</td>
+                                <td><span class="status ptrooper">Paratrooper</span> <span class="status pvt">PVT</span>
+                                </td>
+                                <td>Zens</td>
+                                <td><span class="status active">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>4472</td>
+                                <td><span class="status ptrooper">Paratrooper</span> <span class="status pvt">PVT</span>
+                                </td>
+                                <td>Vandal</td>
+                                <td><span class="status active">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>7243</td>
+                                <td><span class="status ptrooper">Paratrooper</span> <span class="status spc">SPC</span>
+                                </td>
+                                <td>Sage</td>
+                                <td><span class="status active">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>1142</td>
+                                <td><span class="status ptrooper">Paratrooper</span> <span class="status pvt">PVT</span>
+                                </td>
+                                <td>Frost</td>
+                                <td><span class="status active">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>1117</td>
+                                <td><span class="status ptrooper">Paratrooper</span> <span class="status pvt">PVT</span>
+                                </td>
+                                <td>Klutz</td>
+                                <td><span class="status active">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>2000</td>
+                                <td><span class="status ptrooper">Paratrooper</span> <span class="status spc">SPC</span>
+                                </td>
+                                <td>Spark</td>
+                                <td><span class="status active">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>3321</td>
+                                <td><span class="status ptrooper">Paratrooper</span> <span class="status pvt">PVT</span>
+                                </td>
+                                <td>Nerd</td>
+                                <td><span class="status active">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>5098</td>
+                                <td><span class="status ptrooper">Paratrooper</span> <span class="status lcp">LCP</span>
+                                </td>
+                                <td>Nova</td>
+                                <td><span class="status active">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>9665</td>
+                                <td><span class="status ptrooper">Paratrooper</span> <span class="status pvt">PVT</span>
+                                </td>
+                                <td>Marrow</td>
+                                <td><span class="status active">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>2840</td>
+                                <td><span class="status ptrooper">Paratrooper</span> <span class="status pvt">PVT</span>
+                                </td>
+                                <td>Jaws</td>
+                                <td><span class="status active">Active</span></td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+
+                <!-- SQUAD 3 -->
+                <div class="squad">
+                    <div class="squad-title">3RD SQUAD (A2-3)</div>
+                    <div class="squad-capacity">Strength: 1 / 10</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Position</th>
+                                <th>Name</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>8583</td>
+                                <td><span class="status ptrooper">Paratrooper</span> <span class="status spc">SPC</span>
+                                </td>
+                                <td>Ragnar</td>
+                                <td><span class="status active">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td><span class="status open">Open</span></td>
+                            </tr>
+                            <tr>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td><span class="status open">Open</span></td>
+                            </tr>
+                            <tr>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td><span class="status open">Open</span></td>
+                            </tr>
+                            <tr>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td><span class="status open">Open</span></td>
+                            </tr>
+                            <tr>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td><span class="status open">Open</span></td>
+                            </tr>
+                            <tr>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td><span class="status open">Open</span></td>
+                            </tr>
+                            <tr>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td><span class="status open">Open</span></td>
+                            </tr>
+                            <tr>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td><span class="status open">Open</span></td>
+                            </tr>
+                            <tr>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td><span class="status open">Open</span></td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+</body>
+
+</html>
